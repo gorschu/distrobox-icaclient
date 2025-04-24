@@ -22,3 +22,6 @@ for a ready-to-go image for faster subsequent startup times.
 
 `wfica.sh` is exported to the host and can be used to start the ICAClient
 with the provided `.ica` file.
+
+You might want to adjust the `home` key in `distrobox.ini` and/or `distrobox.prebuilt.ini`
+to suit your preferences.
