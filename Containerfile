@@ -1,3 +1,6 @@
-FROM ghcr.io/ublue-os/fedora-toolbox:latest
+FROM registry.fedoraproject.org/fedora-toolbox:42
 
-RUN --mount=type=bind,source=./init.sh,destination=/tmp/init.sh /tmp/init.sh
+ARG ICA_CLIENT_VERSION
+ARG ICA_CLIENT_SHASUM
+
+RUN --mount=type=bind,source=./init.sh,destination=/tmp/init.sh,relabel=shared /tmp/init.sh
