@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora-toolbox:42
+FROM registry.fedoraproject.org/fedora-toolbox:44
 
 ARG ICA_CLIENT_VERSION
 ARG ICA_CLIENT_SHASUM
