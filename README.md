@@ -5,7 +5,9 @@ Citrix ICAClient in a containerized environment.
 
 ## Usage
 
-Clone the repository and either just
+Clone the repository and run the script `detect_latest.sh`.
+
+To build the Distrobox container either just
 
 ```bash
 distrobox assemble create
