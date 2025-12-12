@@ -1,5 +1,5 @@
-ICA_CLIENT_VERSION := "25.08.0.88-0"
-ICA_CLIENT_SHASUM := "1ebd3eae4e0ad97bc1a00d011d896e6b1d8e98206bc8815d8382b272576f348a"
+ICA_CLIENT_VERSION := "25.08.10.111-0"
+ICA_CLIENT_SHASUM := "7b2110b8a1b68fbf02b66c46fbbeef04c3665116c30d611032a5336d288ef38e"
 
 build:
   podman build \
@@ -14,3 +14,4 @@ assemble:
 
 assemble-prebuilt:
   distrobox assemble create --file ./distrobox.prebuilt.ini
+
