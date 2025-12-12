@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-toolbox:42
+FROM quay.io/fedora/fedora-toolbox:44
 
 ARG ICA_CLIENT_VERSION
 ARG ICA_CLIENT_SHASUM
