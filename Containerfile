@@ -5,6 +5,7 @@ LABEL org.opencontainers.image.title="Citrix ICA Client Distrobox"
 LABEL org.opencontainers.image.description="Fedora Toolbox container with Citrix Workspace (ICA Client) for distrobox usage"
 LABEL org.opencontainers.image.source="https://github.com/gorschu/distrobox-icaclient"
 LABEL org.opencontainers.image.authors="gorschu"
+LABEL org.opencontainers.image.licenses="MIT"
 
 # Install dependencies: Python for web scraping, jq for JSON parsing
 RUN dnf5 install -y python3 python3-beautifulsoup4 jq && dnf5 clean all
