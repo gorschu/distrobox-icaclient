@@ -6,8 +6,8 @@ LABEL org.opencontainers.image.description="Fedora Toolbox container with Citrix
 LABEL org.opencontainers.image.source="https://github.com/gorschu/distrobox-icaclient"
 LABEL org.opencontainers.image.authors="gorschu"
 
-# Install Python dependencies for version detection
-RUN dnf5 install -y python3-beautifulsoup4 && dnf5 clean all
+# Install dependencies: Python for web scraping, jq for JSON parsing
+RUN dnf5 install -y python3 python3-beautifulsoup4 jq && dnf5 clean all
 
 # Run init script for detection of latest version and installation
 RUN --mount=type=bind,source=./init.sh,destination=/tmp/init.sh,relabel=shared \

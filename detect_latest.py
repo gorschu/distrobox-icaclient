@@ -15,10 +15,12 @@ from bs4 import BeautifulSoup
 
 def fetch_citrix_page(url):
     """Fetch the Citrix downloads page."""
-    headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
     req = Request(url, headers=headers)
-    with urlopen(req, timeout=30) as response:
-        return response.read().decode('utf-8')
+    with urlopen(req, timeout=60) as response:
+        return response.read().decode("utf-8")
 
 
 def find_redhat_section(soup):
@@ -26,7 +28,8 @@ def find_redhat_section(soup):
     Find the HTML section containing Red Hat package information.
 
     Strategy: Look for text containing "Red Hat" and "Full Package",
-    then get the parent container that likely holds both the download link and SHA256.
+    then traverse up the parent chain to find a container that has both
+    the download link and SHA256 checksum.
     """
     # Find all text elements containing "Red Hat"
     for element in soup.find_all(string=re.compile(r"Red\s*[-]?\s*Hat", re.IGNORECASE)):
@@ -35,12 +38,26 @@ def find_redhat_section(soup):
         if parent:
             parent_text = parent.get_text()
             if re.search(r"Full\s+Package", parent_text, re.IGNORECASE):
-                # Go up a few levels to get the container that holds everything
+                # Traverse up the parent chain, checking at each level if the container
+                # contains both a Red Hat RPM download link and a SHA256 checksum.
                 container = parent
-                for _ in range(3):  # Try going up 3 levels
+                max_levels = 5  # Avoid infinite loops
+                for _ in range(max_levels):
+                    # Check for download link pattern and SHA256 pattern
+                    has_download = container.find(
+                        "a", rel=re.compile(r"ICAClient-rhel-.*\.rpm")
+                    )
+                    has_sha256 = re.search(
+                        r"SHA-256\s*[-:]\s*[a-fA-F0-9]{64}",
+                        container.get_text(),
+                        re.IGNORECASE,
+                    )
+                    if has_download and has_sha256:
+                        return container
                     if container.parent:
                         container = container.parent
-                return container
+                    else:
+                        break
     return None
 
 
@@ -81,6 +98,10 @@ def extract_download_url(section):
                 else:
                     download_url = "https://" + rel_value
 
+                # Ensure the download_url uses HTTPS for security
+                if not download_url.startswith("https://"):
+                    return None, None
+
                 return version, download_url
 
     return None, None
@@ -97,9 +118,9 @@ def extract_sha256(section):
 
     section_text = section.get_text()
 
-    # Look for SHA-256 followed by the hash
+    # Look for SHA-256 followed by the hash (case-insensitive hex)
     sha_match = re.search(
-        r"SHA-256\s*[-:]\s*([a-f0-9]{64})", section_text, re.IGNORECASE
+        r"SHA-256\s*[-:]\s*([a-fA-F0-9]{64})", section_text, re.IGNORECASE
     )
 
     if sha_match:
@@ -145,13 +166,14 @@ def main():
         html = fetch_citrix_page(url)
         version, sha256, download_url = extract_redhat_info(html)
 
-        if not version or not sha256:
+        if not version or not sha256 or not download_url:
             print(
                 f"ERROR: Could not extract Red Hat RPM information from {url}",
                 file=sys.stderr,
             )
             print(f"Found version: {version or 'N/A'}", file=sys.stderr)
             print(f"Found sha256: {sha256 or 'N/A'}", file=sys.stderr)
+            print(f"Found download_url: {download_url or 'N/A'}", file=sys.stderr)
             sys.exit(1)
 
         # Determine output format
@@ -161,9 +183,9 @@ def main():
             print(
                 json.dumps(
                     {
-                        "version": version,
-                        "sha256": sha256,
-                        "download_url": download_url,
+                        "ICA_CLIENT_VERSION": version,
+                        "ICA_CLIENT_SHASUM": sha256,
+                        "ICA_CLIENT_DOWNLOAD_URL": download_url,
                     },
                     indent=2,
                 )
