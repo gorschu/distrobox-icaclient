@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora-toolbox:42
+FROM quay.io/fedora/fedora-toolbox:44
 
 # Container metadata
 LABEL org.opencontainers.image.title="Citrix ICA Client Distrobox"
