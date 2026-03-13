@@ -11,11 +11,23 @@ Clone the repository and either just
 distrobox assemble create
 ```
 
+or
+
+```bash
+just assemble
+```
+
 to have the ICAClient installed via `init_hooks` or
 
 ```bash
-just build
+podman build -t icaclient:latest .
 distrobox assemble create --file ./distrobox.prebuilt.ini
+```
+
+or
+
+```bash
+just assemble-prebuilt
 ```
 
 for a ready-to-go image for faster subsequent startup times.
