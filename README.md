@@ -5,17 +5,29 @@ Citrix ICAClient in a containerized environment.
 
 ## Usage
 
-Clone the repository and either just
+Clone the repository and either run
 
 ```bash
 distrobox assemble create
 ```
 
-to have the ICAClient installed via `init_hooks` or
+or
 
 ```bash
-just build
+just assemble
+```
+
+to have the ICAClient installed via `init_hooks` or run
+
+```bash
+podman build -t icaclient:latest .
 distrobox assemble create --file ./distrobox.prebuilt.ini
+```
+
+or
+
+```bash
+just assemble-prebuilt
 ```
 
 for a ready-to-go image for faster subsequent startup times.

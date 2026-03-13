@@ -1,7 +1,7 @@
 default:
   @just --list
 
-# build pre-built image
+# build base container image
 build:
   podman build -t icaclient:latest .
 
