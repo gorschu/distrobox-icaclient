@@ -5,7 +5,7 @@ Citrix ICAClient in a containerized environment.
 
 ## Usage
 
-Clone the repository and either just
+Clone the repository and either run
 
 ```bash
 distrobox assemble create
@@ -17,7 +17,7 @@ or
 just assemble
 ```
 
-to have the ICAClient installed via `init_hooks` or
+to have the ICAClient installed via `init_hooks` or run
 
 ```bash
 podman build -t icaclient:latest .
