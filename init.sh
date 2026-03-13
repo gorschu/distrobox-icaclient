@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+echo "Enabling EPEL and installing build dependencies..."
+sudo dnf install -y epel-release
+sudo dnf install -y python3 python3-beautifulsoup4 jq
+
 echo "Detecting latest Citrix Workspace (ICA Client) version..."
 
 # Detect latest version dynamically using JSON parsing (safer than eval)
@@ -45,10 +49,10 @@ echo "Verifying SHA256 checksum..."
 echo "${ICA_CLIENT_SHASUM} ${dest}" | sha256sum --check --status
 
 echo "Installing ICA Client..."
-sudo dnf5 --assumeyes install "${dest}"
+sudo dnf --assumeyes install "${dest}"
 
 echo "Cleaning up..."
-sudo dnf5 clean all || true
+sudo dnf clean all || true
 rm -f "${dest}" || true
 
 echo "ICA Client ${ICA_CLIENT_VERSION} installed successfully!"
