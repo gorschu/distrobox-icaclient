@@ -83,7 +83,7 @@ def extract_download_url(section):
         if "ICAClient-rhel-" in rel_value and ".rpm" in rel_value:
             # Extract version from the URL
             version_match = re.search(
-                r"ICAClient-rhel-([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+-[0-9]+)\.x86_64\.rpm",
+                r"ICAClient-rhel-(?:gcc-[0-9]+-)?([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+-[0-9]+)\.x86_64\.rpm",
                 rel_value,
             )
 

@@ -15,12 +15,11 @@ sudo dnf install -y python3 python3-beautifulsoup4 jq
 echo "Detecting latest Citrix Workspace (ICA Client) version..."
 
 # Detect latest version dynamically using JSON parsing (safer than eval)
-json_output="$(python3 /tmp/detect_latest.py --json 2>&1)"
-status=$?
-if [[ $status -ne 0 ]]; then
+if json_output="$(python3 /tmp/detect_latest.py --json)"; then
+    :
+else
+    status=$?
     echo "Error: detect_latest.py failed with exit code $status." >&2
-    echo "Output:" >&2
-    echo "$json_output" >&2
     exit $status
 fi
 
