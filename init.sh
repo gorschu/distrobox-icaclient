@@ -2,6 +2,12 @@
 
 set -euo pipefail
 
+# Hooks run on every container start; reinstall only when recreating the box.
+if rpm -q ICAClient >/dev/null 2>&1; then
+    echo "ICA Client is already installed; skipping setup."
+    exit 0
+fi
+
 echo "Enabling EPEL and installing build dependencies..."
 sudo dnf install -y epel-release
 sudo dnf install -y python3 python3-beautifulsoup4 jq
