@@ -32,6 +32,10 @@ just assemble-prebuilt
 
 for a ready-to-go image for faster subsequent startup times.
 
+The init hook skips setup when the ICAClient RPM is already installed. For the
+hook-based setup, run `just assemble` again to replace the box and install the
+latest client. This discards changes made inside the container.
+
 `wfica.sh` is exported to the host and can be used to start the ICAClient
 with the provided `.ica` file.
 
